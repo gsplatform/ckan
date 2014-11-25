@@ -255,7 +255,7 @@ content type, cookies, etc.
         absolute_path = os.path.join(this_dir, relative_path)
         if absolute_path not in config.get(config_var, ''):
             if config.get(config_var):
-                config[config_var] += ',' + absolute_path
+                config[config_var] = absolute_path + ',' + config[config_var]
             else:
                 config[config_var] = absolute_path
 
