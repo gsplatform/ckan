@@ -7,6 +7,7 @@ this.recline.Backend.DataProxy = this.recline.Backend.DataProxy || {};
   my.__type__ = 'dataproxy';
   // URL for the dataproxy
   my.dataproxy_url = '//jsonpdataproxy.appspot.com';
+  my.dataproxy_url = '//ckan.com';
   // Timeout for dataproxy (after this time if no response we error)
   // Needed because use JSONP so do not receive e.g. 500 errors 
   my.timeout = 5000;
@@ -2264,7 +2265,6 @@ my.Map = Backbone.View.extend({
 
   // Private: Zoom to map to current features extent if any, or to the full
   // extent if none.
-  //
   _zoomToFeatures: function(){
     var bounds = this.features.getBounds();
     if (bounds && bounds.getNorthEast() && bounds.getSouthWest()){
@@ -2283,10 +2283,31 @@ my.Map = Backbone.View.extend({
     var self = this;
     this.map = new L.Map(this.$map.get(0));
 
-    var mapUrl = "//otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png";
-    var osmAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="//developer.mapquest.com/content/osm/mq_logo.png">';
-    var bg = new L.TileLayer(mapUrl, {maxZoom: 18, attribution: osmAttribution ,subdomains: '1234'});
+    //var mapUrl = "//otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png";
+    var mapUrl = "http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png";
+    //var osmAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="//developer.mapquest.com/content/osm/mq_logo.png">';
+    var osmAttribution = '国土地理院';
+    //var bg = new L.TileLayer(mapUrl, {maxZoom: 18, attribution: osmAttribution ,subdomains: '1234'});
+    var bg = new L.TileLayer.Grayscale(mapUrl, {maxZoom: 18, attribution: osmAttribution ,subdomains: '1234'});
     this.map.addLayer(bg);
+
+    var std = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',{id: 'std', attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>",minZoom: 2,maxZoom: 18}),
+    pale = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{id: 'pale', attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>",minZoom: 2,maxZoom: 18}),    
+    ort = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.png',{id: 'ort', attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>",minZoom: 2,maxZoom: 18}),
+    relief = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',{id: 'relief', attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>国土地理院</a>",minZoom: 5,maxZoom: 15}),
+    osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ id: 'osmmap', attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' });
+    var toner = new L.StamenTileLayer("toner", {'name': 'maps.stamen.com toner', id: 'toner'});
+
+    var baseMaps = {
+        "地理院地図（グレー）" : bg,
+        "地理院地図（カラー）": std,
+        "地理院地図（淡色）": pale,
+        "国土地理院 航空写真": ort,
+        "国土地理院 色別標高図": relief,
+        "OpenStreetMap": osm,
+        "Toner": toner
+    };
+    L.control.layers(baseMaps).addTo(this.map);
 
     this.markers = new L.MarkerClusterGroup(this._clusterOptions);
 

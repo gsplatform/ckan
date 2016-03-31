@@ -19,15 +19,19 @@ def get_proxified_resource_url(data_dict, proxy_schemes=['http','https']):
 
     ckan_url = config.get('ckan.site_url', '//localhost:5000')
     url = data_dict['resource']['url']
+    log.info('URL is {0}'.format(url))
     scheme = urlparse.urlparse(url).scheme
     compare_domains = datapreview.compare_domains
     if not compare_domains([ckan_url, url]) and scheme in proxy_schemes:
-        url = h.url_for(
-            action='proxy_resource',
-            controller='ckanext.resourceproxy.controller:ProxyController',
-            id=data_dict['package']['name'],
-            resource_id=data_dict['resource']['id'])
+#        url = h.url_for(
+#            action='proxy_resource',
+#            controller='ckanext.resourceproxy.controller:ProxyController',
+#            id=data_dict['package']['name'],
+#            resource_id=data_dict['resource']['id'])
         log.info('Proxified url is {0}'.format(url))
+   
+#    log.info('Good url is {0}'.format(url))
+#    url = 'https://gpf.nict.go.jp' + '/s1/ckan/dataset/{id}/resource/{resource_id}'
     return url
 
 

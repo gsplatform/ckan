@@ -39,6 +39,10 @@ ckan.module('text_view', function (jQuery, _) {
       var JSONP_FORMATS = preview_metadata['jsonp_formats'];
 
       var p;
+      //追加   
+      var tflg;
+      var i;
+      var tlen;
 
       if (JSON_FORMATS.indexOf(format) !== -1) {
         p = this.options.parameters.json;
@@ -49,6 +53,28 @@ ckan.module('text_view', function (jQuery, _) {
       } else {
         p = this.options.parameters.text;
       }
+
+      jQuery.ajax(resource_url, {
+        type: 'GET',
+        async: false,
+        contentType: p.contentType,
+        dataType: p.dataType,
+        success: function(data, textStatus, jqXHR) {
+          data = p.dataConverter ? p.dataConverter(data) : data;
+          //Shift-JISの文字化け判定
+          tflg = false;
+          tlen = data.length;if(tlen>255){tlen=255;}
+          for(i=0;i<tlen;i++)
+          {if(data.charCodeAt(i)>65519){tflg=true;break;}} 
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          if (textStatus == 'error' && jqXHR.responseText.length) {
+            self.el.html(jqXHR.responseText);
+          } else {
+            self.el.html(self.i18n('error', {text: textStatus, error: errorThrown}));
+          }
+        }
+      });
 
       jQuery.ajax(resource_url, {
         type: 'GET',
@@ -63,8 +89,11 @@ ckan.module('text_view', function (jQuery, _) {
           } else {
             highlighted = '<pre>' + data + '</pre>';
           }
-
           self.el.html(highlighted);
+        },
+        beforeSend:function(xhr){
+          //Shift-JISへの変換
+          if(tflg){xhr.overrideMimeType("text/html;charset=Shift-JIS");}
         },
         error: function(jqXHR, textStatus, errorThrown) {
           if (textStatus == 'error' && jqXHR.responseText.length) {

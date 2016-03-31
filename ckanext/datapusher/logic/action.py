@@ -13,6 +13,7 @@ import ckanext.datapusher.logic.schema as dpschema
 
 log = logging.getLogger(__name__)
 _get_or_bust = logic.get_or_bust
+
 _validate = ckan.lib.navl.dictization_functions.validate
 
 
@@ -49,6 +50,7 @@ def datapusher_submit(context, data_dict):
     datapusher_url = pylons.config.get('ckan.datapusher.url')
 
     site_url = pylons.config['ckan.site_url']
+    site_url = 'http://db1/s1/ckan/'
     callback_url = site_url.rstrip('/') + '/api/3/action/datapusher_hook'
 
     user = p.toolkit.get_action('user_show')(context, {'id': context['user']})
@@ -76,6 +78,13 @@ def datapusher_submit(context, data_dict):
     context['ignore_auth'] = True
     result = p.toolkit.get_action('task_status_update')(context, task)
     task_id = result['id']
+
+    log.info('Debug_00 %s',res_id)
+    log.info('Debug_01 %s',site_url)
+    log.info('Debug_02 %s',callback_url)
+    log.info('Debug_03 %s',user['apikey'])
+    log.info('Debug_04 %s',task_id)
+    log.info('Debug_05 %s',datapusher_url)
 
     try:
         r = requests.post(
@@ -185,7 +194,6 @@ def datapusher_status(context, data_dict):
         datapusher status for.
     :type resource_id: string
     '''
-
     p.toolkit.check_access('datapusher_status', context, data_dict)
 
     if 'id' in data_dict:
