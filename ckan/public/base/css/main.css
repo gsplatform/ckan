@@ -8051,7 +8051,7 @@ h4 small {
   .js [role=main] .secondary .filters {
     display: none;
     position: fixed;
-    overflow: auto;
+    overflow: visible;
     top: 0;
     left: 0;
     right: 0;
@@ -8151,9 +8151,6 @@ h4 small {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-}
-.context-info p {
-  overflow: auto;
 }
 .context-info code {
   display: block;
