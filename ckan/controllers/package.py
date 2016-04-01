@@ -135,6 +135,7 @@ class PackageController(base.BaseController):
     def search(self):
         from ckan.lib.search import SearchError
 
+        log.info(request.params.items())
         package_type = self._guess_package_type()
 
         try:
@@ -209,6 +210,7 @@ class PackageController(base.BaseController):
             c.fields_grouped = {}
             search_extras = {}
             fq = ''
+             
             for (param, value) in request.params.items():
                 if param not in ['q', 'page', 'sort'] \
                         and len(value) and not param.startswith('_'):
@@ -221,7 +223,7 @@ class PackageController(base.BaseController):
                             c.fields_grouped[param].append(value)
                     else:
                         search_extras[param] = value
-
+            
             context = {'model': model, 'session': model.Session,
                        'user': c.user or c.author, 'for_view': True,
                        'auth_user_obj': c.userobj}
@@ -257,6 +259,7 @@ class PackageController(base.BaseController):
 
             c.facet_titles = facets
 
+            log.info(fq)
             data_dict = {
                 'q': q,
                 'fq': fq.strip(),
@@ -1132,7 +1135,7 @@ class PackageController(base.BaseController):
             c.package['isopen'] = False
 
         # TODO: find a nicer way of doing this
-        c.datastore_api = '%s/api/action' % config.get('ckan.site_url', '').rstrip('/')
+        c.datastore_api = '%s/api/action' % config.get('ckan.site_url_pusher', '').rstrip('/')
 
         c.related_count = c.pkg.related_count
 

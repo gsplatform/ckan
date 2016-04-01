@@ -1852,6 +1852,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     return null;
                 } else if (this.opts.width === "element"){
                     return this.opts.element.outerWidth(false) === 0 ? 'auto' : this.opts.element.outerWidth(false) + 'px';
+                    //return this.opts.element.outerWidth(false) === 0 ? 'auto' : '100%';
                 } else if (this.opts.width === "copy" || this.opts.width === "resolve") {
                     // check if there is inline style on the element that contains width
                     style = this.opts.element.attr('style');
@@ -1873,6 +1874,8 @@ the specific language governing permissions and limitations under the Apache Lic
 
                         // finally, fallback on the calculated width of the element
                         return (this.opts.element.outerWidth(false) === 0 ? 'auto' : this.opts.element.outerWidth(false) + 'px');
+                        //return (this.opts.element.outerWidth(false) === 0 ? 'auto' : '240px');
+                        //return (this.opts.element.outerWidth(false) === 0 ? 'auto' : '100%');
                     }
 
                     return null;

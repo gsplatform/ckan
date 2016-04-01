@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 DEFAULT_TEXT_FORMATS = ['text/plain', 'txt', 'plain']
 DEFAULT_XML_FORMATS = ['xml', 'rdf', 'rdf+xml', 'owl+xml', 'atom', 'rss']
-DEFAULT_JSON_FORMATS = ['json']
+DEFAULT_JSON_FORMATS = ['json', 'geojson']
 DEFAULT_JSONP_FORMATS = ['jsonp']
 
 

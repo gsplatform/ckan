@@ -70,11 +70,11 @@
   ],
   "Reorder resource view": [
     null,
-    "リソースビューを再整列"
+    "データビューを再整列"
   ],
   "Reorder resources": [
     null,
-    "リソースを再整列"
+    "データを再整列"
   ],
   "Resource uploaded": [
     null,

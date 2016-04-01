@@ -70,7 +70,9 @@
     {%- block styles %}
       {% resource g.main_css[6:] %}
     {% endblock %}
-
+    <script type="text/javascript">
+      document.cookie = "type=value";
+    </script>
     {% block head_extras %}
       {# defined in the config.ini under "ckan.template_head_end" #}
       {{ g.template_head_end | safe }}
