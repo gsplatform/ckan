@@ -1,6 +1,8 @@
 CKAN: The Open Source Data Portal Software
 ==========================================
 
+2015NICTサーバ納品版
+
 .. image:: https://secure.travis-ci.org/ckan/ckan.png?branch=master
     :target: http://travis-ci.org/ckan/ckan
     :alt: Build Status
